@@ -1,0 +1,65 @@
+.button {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: var(--border-default);
+  border-radius: var(--border-radius-medium);
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-family-primary);
+
+  &.primary {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+
+    &:hover {
+      background-color: #0056b3; // Используем фиксированный цвет вместо darken
+    }
+  }
+
+  &.secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+
+    &:hover {
+      background-color: #5a6268; // Используем фиксированный цвет вместо darken
+    }
+  }
+
+  &.tertiary {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: var(--border-primary);
+
+    &:hover {
+      background-color: var(--color-surface);
+    }
+  }
+
+  &.small {
+    font-size: var(--font-size-small);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  &.medium {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  &.large {
+    font-size: var(--font-size-title);
+    padding: var(--spacing-md) var(--spacing-lg);
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}

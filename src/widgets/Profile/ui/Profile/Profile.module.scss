@@ -1,0 +1,28 @@
+.profileContainer {
+  margin-top: 50px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profileContainer .ant-avatar {
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.image {
+  object-fit: cover;
+}
+
+.flexWrap {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.avatar {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+}

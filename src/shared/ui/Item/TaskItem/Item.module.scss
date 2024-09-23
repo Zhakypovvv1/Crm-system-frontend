@@ -1,0 +1,22 @@
+.box {
+  padding: 10px;
+  margin-bottom: 16px;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .name {
+    font-weight: bold;
+  }
+  .processing {
+    color: red;
+  }
+  .completed {
+    color: green;
+  }
+  .ant-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

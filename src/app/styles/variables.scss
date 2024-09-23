@@ -1,0 +1,45 @@
+:root {
+  /* Цветовая схема */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-primary: #007bff;
+  --color-secondary: #6c757d;
+  --color-accent: #28a745;
+  --color-surface: #f8f9fa;
+  --color-error: #dc3545;
+  --color-text-primary: #212529;
+  --color-text-secondary: #6c757d;
+
+  /* Шрифты */
+  --font-family-primary: "Roboto", sans-serif;
+  --font-family-secondary: "Open Sans", sans-serif;
+  --font-size-base: 16px;
+  --font-size-title: 24px;
+  --font-size-subtitle: 20px;
+  --font-size-text: 16px;
+  --font-size-small: 14px;
+
+  /* Отступы */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Границы */
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+  --border-radius-large: 16px;
+
+  --border-default: 2px solid var(--color-black);
+  --border-fancy: 2px dashed var(--color-accent);
+
+  /* Тени */
+  --shadow-1: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-2: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Прочее */
+  --transition-fast: 0.3s;
+  --transition-normal: 0.5s;
+  --transition-slow: 0.8s;
+}
