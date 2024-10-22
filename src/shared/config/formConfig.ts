@@ -1,7 +1,3 @@
-interface FormConfig {
-  [key: string]: Record<string, string>;
-}
-
 export const formConfig = {
   login: {
     title: "Login",
@@ -24,7 +20,7 @@ export const formConfig = {
     title: "Task",
     buttonText: "Create task",
     fields: [
-      { name: "title", type: "text", placeholder: "Title" },
+      { name: "title", type: "task", placeholder: "Title" },
       {
         name: "category",
         type: "select",
@@ -57,5 +53,17 @@ export const formConfig = {
     text: "Edit Detail",
     buttonText: "Save Changes",
     fields: [{ name: "text", type: "text", placeholder: "text" }],
+  },
+  categories: {
+    name: "Category",
+    buttonText: "Create category",
+    fields: [
+      { name: "name", type: "category", placeholder: "create category" },
+    ],
+  },
+  tags: {
+    name: "Tag",
+    buttonText: "Create tag",
+    fields: [{ name: "name", type: "tag", placeholder: "create tag" }],
   },
 };

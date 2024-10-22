@@ -1,30 +1,19 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../api/axiosConfig";
-import { RootState } from "../../../app/Provider/store/store";
-import { AxiosRequestConfig } from "axios";
 
 interface AddTaskState {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
   message: string | null;
 }
+
 export const addTaskThunk = createAsyncThunk<
   string,
   Record<string, unknown>,
-  { rejectValue: string; state: RootState }
->("addTask/addTaskThunk", async (newTask, { rejectWithValue, getState }) => {
+  { rejectValue: string }
+>("addTask/addTaskThunk", async (newTask, { rejectWithValue }) => {
   try {
-    const token: string | null = getState().getToken.token;
-    const config: AxiosRequestConfig = {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    };
-    const response = await axiosInstance.post(
-      "tasks/create-task",
-      newTask,
-      config
-    );
+    const response = await axiosInstance.post("tasks/create-task", newTask);
     return response.data.message;
   } catch (error) {
     if (error instanceof Error) return rejectWithValue(error.message);

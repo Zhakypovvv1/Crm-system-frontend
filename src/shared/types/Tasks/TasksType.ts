@@ -4,12 +4,12 @@ interface TaskDetails {
 }
 
 export interface TasksType {
-  category?: null;
-  details?: null | TaskDetails;
-  notes?: string[];
+  category: null;
+  details: null | TaskDetails;
+  notes: string[];
   status: boolean | string;
-  tags?: string[];
+  tags: string[];
   title: string;
-  userId?: string;
+  userId: string;
   _id: string;
 }

@@ -1,65 +1,59 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../api/axiosConfig";
 
-interface EditTaskPayload {
-  id: string | undefined;
-  formData: Record<string, unknown>;
-}
-
-interface EditTaskState {
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
-  message: string | null;
-}
-
-export const editTaskThunk = createAsyncThunk<
+export const deleteTagThunk = createAsyncThunk<
   string,
-  EditTaskPayload,
+  string,
   { rejectValue: string }
->("editTask/editTaskThunk", async ({ id, formData }, { rejectWithValue }) => {
+>("deleteTag/deleteTagThunk", async (id, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.patch(
-      `tasks/edit-task/${id}`,
-      formData
-    );
-    return response.data.editTask;
+    const response = await axiosInstance.delete(`tags/delete-tag/${id}`);
+    return response.data.message;
   } catch (error) {
     if (error instanceof Error) return rejectWithValue(error.message);
     return rejectWithValue("Unknown error");
   }
 });
 
-const initialState: EditTaskState = {
+interface TagsState {
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
+  message: string | null;
+}
+
+const initialState: TagsState = {
   status: "idle",
   error: null,
   message: null,
 };
 
-const editTaskSlice = createSlice({
-  name: "editTask",
+const deleteTagSlice = createSlice({
+  name: "deleteTag",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(editTaskThunk.pending, (state) => {
+      .addCase(deleteTagThunk.pending, (state) => {
         state.status = "loading";
         state.error = null;
+        state.message = null;
       })
       .addCase(
-        editTaskThunk.fulfilled,
+        deleteTagThunk.fulfilled,
         (state, action: PayloadAction<string>) => {
+          console.log(action.payload);
           state.status = "succeeded";
           state.message = action.payload;
         }
       )
       .addCase(
-        editTaskThunk.rejected,
+        deleteTagThunk.rejected,
         (state, action: PayloadAction<string | undefined>) => {
           state.status = "failed";
-          state.error = action.payload || null;
+          state.error = action.payload || "Failed to delete tag";
         }
       );
   },
 });
 
-export default editTaskSlice.reducer;
+export default deleteTagSlice.reducer;

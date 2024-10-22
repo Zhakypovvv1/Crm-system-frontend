@@ -1,11 +1,13 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import s from "./shareForm.module.scss";
 import AppButton from "../Button/Button";
+import { Input, Select } from "antd";
 
 interface FormField {
   name: string;
   type: string;
   placeholder: string;
+  options?: { value: string; name: string }[];
 }
 
 interface FormDetails {
@@ -42,8 +44,15 @@ const ShareForm: React.FC<MyFormComponent> = ({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
@@ -59,14 +68,31 @@ const ShareForm: React.FC<MyFormComponent> = ({
       <div className={s.formWrapper}>
         <form onSubmit={onSubmit}>
           {formDetails.fields?.map((el, index: number) => (
-            <input
-              key={index}
-              name={el.name}
-              type={el.type}
-              placeholder={el.placeholder}
-              value={formData[el.name] || ""}
-              onChange={handleChange}
-            />
+            <div key={index}>
+              {el.type === "select" ? (
+                <Select
+                  style={{ width: "100%" }}
+                  placeholder={el.placeholder}
+                  value={formData[el.name]}
+                  onChange={(value) => handleSelectChange(el.name, value)}
+                >
+                  {el.options?.map((option) => (
+                    <Select.Option key={option.value} value={option.value}>
+                      {option.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              ) : (
+                <Input
+                  name={el.name}
+                  type={el.type}
+                  placeholder={el.placeholder}
+                  value={formData[el.name] || ""}
+                  onChange={handleChange}
+                  disabled={disabled}
+                />
+              )}
+            </div>
           ))}
           <AppButton type="submit">{config[type].buttonText}</AppButton>
         </form>

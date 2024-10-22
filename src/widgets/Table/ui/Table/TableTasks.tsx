@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table, Tag } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { TasksType } from "../../../../shared/types/Tasks/TasksType";
 import AppButton from "../../../../shared/ui/Button/Button";
 import Edit from "../../../../features/Edit/ui/Edit/Edit";
 import useFilterSearchParams from "../../../../shared/hooks/useFilterSearchParams";
+import useModal from "../../../../shared/hooks/useModal";
+import Modal from "../../../../shared/ui/Modal/Modal";
+import AddTagsToTask from "../../../../entities/AddTagsToTask/ui/AddTagsToTask/AddTagsToTask";
 
 interface TableTasksProps {
   items: TasksType[];
@@ -22,6 +25,8 @@ const TableTasks: React.FC<TableTasksProps> = ({
   handleDelete,
 }) => {
   const { page, pageSize, updateSearchParams } = useFilterSearchParams();
+  const { isModalOpen, openModal, closeModal } = useModal();
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const columns: TableColumnsType<TasksType> = [
     {
       title: "Task",
@@ -63,6 +68,26 @@ const TableTasks: React.FC<TableTasksProps> = ({
         <Tag color={record.status ? "green" : "red"}>
           {record.status ? "Completed" : "Processing"}
         </Tag>
+      ),
+    },
+    {
+      title: "Tags",
+      render: (_, record) => (
+        <div>
+          <AppButton
+            variant="tertiary"
+            size="small"
+            onClick={() => {
+              setSelectedTaskId(record._id);
+              openModal();
+            }}
+          >
+            add tags
+          </AppButton>
+          <Modal isOpen={isModalOpen} onClose={closeModal} size="large">
+            {selectedTaskId && <AddTagsToTask taskId={selectedTaskId} />}
+          </Modal>
+        </div>
       ),
     },
     {

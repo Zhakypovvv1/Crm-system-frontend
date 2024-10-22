@@ -6,10 +6,6 @@ interface CreateDetailsArgs {
   newDetails: Record<string, unknown>;
 }
 
-interface CreateDetailsResponse {
-  message: string;
-}
-
 interface CreateDetailsState {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;

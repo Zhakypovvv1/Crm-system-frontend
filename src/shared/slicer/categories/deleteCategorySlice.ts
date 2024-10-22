@@ -1,65 +1,59 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../api/axiosConfig";
 
-interface EditTaskPayload {
-  id: string | undefined;
-  formData: Record<string, unknown>;
-}
-
-interface EditTaskState {
-  status: "idle" | "loading" | "succeeded" | "failed";
-  error: string | null;
-  message: string | null;
-}
-
-export const editTaskThunk = createAsyncThunk<
+export const deleteCategoryThunk = createAsyncThunk<
   string,
-  EditTaskPayload,
+  string,
   { rejectValue: string }
->("editTask/editTaskThunk", async ({ id, formData }, { rejectWithValue }) => {
+>("deleteCategory/deleteCategoryThunk", async (id, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.patch(
-      `tasks/edit-task/${id}`,
-      formData
+    const response = await axiosInstance.delete(
+      `categories/delete-category/${id}`
     );
-    return response.data.editTask;
+    return response.data.message;
   } catch (error) {
     if (error instanceof Error) return rejectWithValue(error.message);
     return rejectWithValue("Unknown error");
   }
 });
 
-const initialState: EditTaskState = {
+interface DeleteCategoryState {
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
+  message: string | null;
+}
+
+const initialState: DeleteCategoryState = {
   status: "idle",
   error: null,
   message: null,
 };
 
-const editTaskSlice = createSlice({
-  name: "editTask",
+const deleteCategorySlice = createSlice({
+  name: "deleteCategory",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(editTaskThunk.pending, (state) => {
+      .addCase(deleteCategoryThunk.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
       .addCase(
-        editTaskThunk.fulfilled,
+        deleteCategoryThunk.fulfilled,
         (state, action: PayloadAction<string>) => {
           state.status = "succeeded";
           state.message = action.payload;
         }
       )
       .addCase(
-        editTaskThunk.rejected,
+        deleteCategoryThunk.rejected,
         (state, action: PayloadAction<string | undefined>) => {
           state.status = "failed";
-          state.error = action.payload || null;
+          state.error = action.payload || "Failed to delete category";
         }
       );
   },
 });
 
-export default editTaskSlice.reducer;
+export default deleteCategorySlice.reducer;

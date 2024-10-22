@@ -16,7 +16,7 @@ import SortTasks from "../../../../features/SortTasks/ui/SortTasks/SortTasks";
 import Tasks from "../../../../entities/Tasks/ui/Tasks/Tasks";
 import useDebounce from "../../../../shared/hooks/useDebounce";
 import ContentLayout from "../../../../shared/ui/contentLayout/ContentLayout";
-import { Alert } from "antd";
+import { Alert, message } from "antd";
 import { FiPlus } from "react-icons/fi";
 import AppButton from "../../../../shared/ui/Button/Button";
 
@@ -44,7 +44,6 @@ const Home = () => {
 
   const handleSubmit = async (formData: Record<string, unknown>) => {
     dispatch(addTaskThunk(formData)).then(() => {
-      closeModal();
       dispatch(
         fetchTasksThunk({
           page,
@@ -53,8 +52,10 @@ const Home = () => {
           sortBy: sortByValue,
           sortOrder: sortOrderValue,
         })
-      );
-      updateSearchParams({ page }, (value: number) => value !== 1);
+      ).then(() => {
+        updateSearchParams({ page }, (value: number) => value !== 1);
+        message.success("Task created successfully!");
+      });
     });
   };
 

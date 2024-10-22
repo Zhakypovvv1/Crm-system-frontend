@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 
 export interface PropsItem {
   _id: string;
-  status: boolean;
+  status: boolean | string;
   title: string;
   handleDelete: (id: string) => void;
   handleEditTask: (id: string, formData: Record<string, unknown>) => void;
@@ -36,8 +36,7 @@ const Item: React.FC<PropsItem> = ({
   return (
     <>
       <Card
-        title={<Text strong>{title}</Text>}
-        extra={<Tag color={status ? "green" : "red"}>{statusText}</Tag>}
+        title={<Text strong>id: {_id}</Text>}
         actions={[
           <Button type="link" icon={<EditOutlined />}>
             <Edit

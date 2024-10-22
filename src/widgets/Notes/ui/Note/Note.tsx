@@ -26,7 +26,6 @@ const Note = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
   const { page, updateSearchParams } = useFilterSearchParams();
   console.log(notes?.items);
-  
 
   useEffect(() => {
     dispatch(getNoteThunk({ taskId: id, page, pageSize: 6 }));
@@ -48,11 +47,11 @@ const Note = () => {
 
   return (
     <ContentLayout>
+      {status === "failed" && (
+        <Alert message="Error" description={error} type="error" showIcon />
+      )}
+      {status === "loading" && <Spinner />}
       <div className={s.notesWrapper}>
-        {status === "failed" && (
-          <Alert message="Error" description={error} type="error" showIcon />
-        )}
-        {status === "loading" && <Spinner />}
         <header className={s.header}>
           <h3>Notes</h3>
           <AppButton variant="tertiary" size="small" onClick={openModal}>
@@ -66,7 +65,7 @@ const Note = () => {
           />
         </header>
         <div className={s.noteFlex}>
-          <Notes items={notes.items} taskId={id}/>
+          <Notes items={notes.items} taskId={id} />
         </div>
         <Pagination
           currentPage={page}

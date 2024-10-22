@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../../../shared/hooks/redux-hooks";
 import { TasksType } from "../../../../shared/types/Tasks/TasksType";
 import s from "./Tasks.module.scss";
 import TableTasks from "../../../../widgets/Table/ui/Table/TableTasks";
+import { message } from "antd";
 
 interface PropsItem {
   items: TasksType[];
@@ -30,7 +31,9 @@ const Tasks: React.FC<PropsItem> = ({ items, totalItems }) => {
           sortBy: sortByValue,
           sortOrder: sortOrderValue,
         })
-      );
+      ).then(() => {
+        message.success("Task deleted successfully!");
+      });
     });
   };
 
