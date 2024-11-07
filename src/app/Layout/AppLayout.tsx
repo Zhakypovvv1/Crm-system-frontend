@@ -10,7 +10,7 @@ const AppLayout = () => {
     <>
       <Layout className={s.layout}>
         <Sidebar />
-        <Layout className={s.sideLayout}>
+        <Layout className={s.siteLayout}>
           <AppHeader />
           <div className={s.content}>
             <Outlet />

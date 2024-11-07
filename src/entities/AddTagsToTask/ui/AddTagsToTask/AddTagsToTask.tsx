@@ -4,8 +4,12 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../shared/hooks/redux-hooks";
-import { Button, Select, message } from "antd";
+import { Alert, Button, Select, message } from "antd";
 import { getTagsThunk } from "../../../../shared/slicer/tags/getTagsSlice";
+import { fetchTasksThunk } from "../../../../shared/slicer/tasks/getTasksSlice";
+import useFilterSearchParams from "../../../../shared/hooks/useFilterSearchParams";
+import useDebounce from "../../../../shared/hooks/useDebounce";
+import Spinner from "../../../../shared/ui/Spinner/Spinner";
 const { Option } = Select;
 
 interface AddTagsToTaskProps {
@@ -17,8 +21,9 @@ const AddTagsToTask: React.FC<AddTagsToTaskProps> = ({ taskId }) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const tags = useAppSelector((state) => state.tags);
   const { error, status } = useAppSelector((state) => state.tags);
-  console.log(selectedTags);
-  console.log(taskId);
+  const { searchValue, sortByValue, sortOrderValue, page } =
+    useFilterSearchParams();
+  const debouncedSearch = useDebounce(searchValue);
 
   useEffect(() => {
     dispatch(getTagsThunk());
@@ -26,15 +31,30 @@ const AddTagsToTask: React.FC<AddTagsToTaskProps> = ({ taskId }) => {
 
   const handleAddTags = () => {
     dispatch(addTagsToTaskThunk({ taskId, tagIds: selectedTags })).then(() => {
-      dispatch(getTagsThunk()).then(() => {
-        message.success("Tags added successfully!");
-      });
+      dispatch(getTagsThunk())
+        .then(() => {
+          message.success("Tags added successfully!");
+        })
+        .then(() => {
+          dispatch(
+            fetchTasksThunk({
+              page,
+              pageSize: 6,
+              search: debouncedSearch,
+              sortBy: sortByValue,
+              sortOrder: sortOrderValue,
+            })
+          );
+        });
     });
   };
 
   return (
     <div>
-      <h2>Add Tags to Task</h2>
+      {status === "failed" && (
+        <Alert message="Error" description={error} type="error" showIcon />
+      )}
+      {status === "loading" && <Spinner />}
       <Select
         mode="multiple"
         placeholder="Select tags"

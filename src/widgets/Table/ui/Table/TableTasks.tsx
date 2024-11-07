@@ -38,22 +38,8 @@ const TableTasks: React.FC<TableTasksProps> = ({
           value: "asd",
         },
         {
-          text: "Jim",
-          value: "Jim",
-        },
-        {
-          text: "Submenu",
-          value: "Submenu",
-          children: [
-            {
-              text: "Green",
-              value: "Green",
-            },
-            {
-              text: "Black",
-              value: "Black",
-            },
-          ],
+          text: "new",
+          value: "new",
         },
       ],
       onFilter: (value, record) => record.title.indexOf(value as string) === 0,
@@ -72,6 +58,7 @@ const TableTasks: React.FC<TableTasksProps> = ({
     },
     {
       title: "Tags",
+      dataIndex: "tags",
       render: (_, record) => (
         <div>
           <AppButton

@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Button, List, Space, message, Popconfirm, Alert } from "antd";
+import {
+  Button,
+  List,
+  Space,
+  message,
+  Popconfirm,
+  Alert,
+  Typography,
+} from "antd";
 import {
   useAppDispatch,
   useAppSelector,
@@ -12,14 +20,19 @@ import ShareForm from "../../../../shared/ui/shareForm/shareForm";
 import { formConfig } from "../../../../shared/config/formConfig";
 import Spinner from "../../../../shared/ui/Spinner/Spinner";
 import { NavLink } from "react-router-dom";
+import useModal from "../../../../shared/hooks/useModal";
+import AppButton from "../../../../shared/ui/Button/Button";
+import Modal from "../../../../shared/ui/Modal/Modal";
+import s from "./Categories.module.scss";
+
+const { Text } = Typography;
 
 const Categories: React.FC = () => {
   const dispatch = useAppDispatch();
   const categories = useAppSelector((state) => state.categories);
   const { status, error } = categories;
   const { page } = useFilterSearchParams();
-  console.log(categories);
-
+  const { openModal, isModalOpen, closeModal } = useModal();
   useEffect(() => {
     dispatch(getCategoryThunk({ page, pageSize: 6 }));
   }, [dispatch, page]);
@@ -41,41 +54,53 @@ const Categories: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className={s.container}>
       {status === "failed" && (
         <Alert message="Error" description={error} type="error" showIcon />
       )}
       {status === "loading" && <Spinner />}
       <h1>Category Management</h1>
       <Space>
+        <AppButton variant="tertiary" size="small" onClick={openModal}>
+          Create Category
+        </AppButton>
+      </Space>
+      <Modal isOpen={isModalOpen} onClose={closeModal} size="large">
         <ShareForm
           handleSubmit={handleAddCategory}
           config={formConfig}
           type="categories"
         />
-      </Space>
+      </Modal>
 
-      <List
-        dataSource={categories.items}
-        renderItem={(category) => (
-          <List.Item
-            actions={[
-              <Popconfirm
-                title="Are you sure to delete this category?"
-                onConfirm={() => handleDeleteCategory(category._id)}
-                okText="Yes"
-                cancelText="No"
-              >
-                <Button danger>Delete</Button>
-              </Popconfirm>,
-            ]}
-          >
-            <NavLink to={`/categories/${category._id}`}>
-              {category.name}
-            </NavLink>
-          </List.Item>
-        )}
-      />
+      <div className={s["list-wrapper"]}>
+        <List
+          dataSource={categories.items}
+          renderItem={(category) => (
+            <List.Item
+              actions={[
+                <Popconfirm
+                  title="Are you sure to delete this category?"
+                  onConfirm={() => handleDeleteCategory(category._id)}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <Button danger>Delete</Button>
+                </Popconfirm>,
+              ]}
+            >
+              <Text strong>
+                <NavLink
+                  style={{ textDecoration: "none" }}
+                  to={`/categories/${category._id}`}
+                >
+                  {category.name}
+                </NavLink>
+              </Text>
+            </List.Item>
+          )}
+        />
+      </div>
     </div>
   );
 };

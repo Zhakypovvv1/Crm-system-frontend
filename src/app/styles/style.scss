@@ -1,2 +1,27 @@
 @import "./reset.scss";
 @import "./variables.scss";
+
+body {
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+// .theme-day {
+//   --text-color: #1e1e1e;
+//   --background-color: #ffffff;
+// }
+
+// .theme-night {
+//   --text-color: #ffffff;
+//   --background-color: #1e1e1e;
+// }
+
+// body.theme-day * {
+//   color: var(--text-color);
+//   background-color: var(--background-color);
+// }
+
+// body.theme-night * {
+//   color: var(--text-color);
+//   background-color: var(--background-color);
+// }

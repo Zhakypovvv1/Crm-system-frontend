@@ -8,8 +8,13 @@ interface GetTasksByTagPayload {
   pageSize: number;
 }
 
+interface GetTasksByTagResponse {
+  tasks: TasksType[];
+  pages: number;
+}
+
 export const getTasksByTagThunk = createAsyncThunk<
-  TasksType[],
+  GetTasksByTagResponse,
   GetTasksByTagPayload,
   { rejectValue: string }
 >(
@@ -53,12 +58,15 @@ const getTasksByTagSlice = createSlice({
       })
       .addCase(
         getTasksByTagThunk.fulfilled,
-        (state: TasksByTagState, action: PayloadAction<TasksType[]>) => {
+        (
+          state: TasksByTagState,
+          action: PayloadAction<GetTasksByTagResponse>
+        ) => {
           console.log(action.payload);
 
           state.status = "succeeded";
-          state.tasks = action.payload;
-          state.pages = 1;
+          state.tasks = action.payload.tasks;
+          state.pages = action.payload.pages;
         }
       )
       .addCase(

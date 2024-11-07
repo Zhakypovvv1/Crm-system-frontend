@@ -32,20 +32,21 @@ const Item: React.FC<PropsItem> = ({
   const editConfig = {
     title,
   };
-  console.log(status);
   return (
     <>
       <Card
-        title={<Text strong>id: {_id}</Text>}
+        title={
+          <Text>
+            id: <Text strong>{_id}</Text>
+          </Text>
+        }
         actions={[
-          <Button type="link" icon={<EditOutlined />}>
             <Edit
               type="edit"
               editConfig={editConfig}
               id={_id}
               handleEdit={handleEditTask}
-            />
-          </Button>,
+            />,
           <Button
             type="link"
             icon={<DeleteOutlined />}
@@ -75,9 +76,21 @@ const Item: React.FC<PropsItem> = ({
             <Tag color={status ? "green" : "red"} className={statusStyles}>
               {statusText}
             </Tag>
-            <NavLink to={`/tasks/${_id}/notes`}>add notes</NavLink>
-            <NavLink to={`/tasks/${_id}/details`}>add details</NavLink>
           </p>
+          <div className={s["link-wrapper"]}>
+            <NavLink
+              style={{ textDecoration: "none" }}
+              to={`/tasks/${_id}/notes`}
+            >
+              add notes
+            </NavLink>
+            <NavLink
+              style={{ textDecoration: "none" }}
+              to={`/tasks/${_id}/details`}
+            >
+              add details
+            </NavLink>
+          </div>
         </Space>
       </Card>
     </>

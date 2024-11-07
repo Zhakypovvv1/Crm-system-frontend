@@ -13,6 +13,7 @@ import Item from "../../../../shared/ui/Item/TaskItem/Item";
 import { deleteTaskThunk } from "../../../../shared/slicer/tasks/deleteTaskSlice";
 import { editTaskThunk } from "../../../../shared/slicer/tasks/editTaskSlice";
 import { toggleTaskThunk } from "../../../../shared/slicer/tasks/toggleTaskSlice";
+import s from "./TasksByCategory.module.scss";
 
 const TasksByCategory: React.FC = () => {
   const { categoryId } = useParams<string>();
@@ -72,13 +73,15 @@ const TasksByCategory: React.FC = () => {
         <Alert message="Error" description={error} type="error" showIcon />
       )}
       {status === "loading" && <Spinner />}
-      <h2>Tasks in Category</h2>
-      {renderItems}
-      <Pagination
-        currentPage={page}
-        onChangePage={handlePageChange}
-        pageCount={tasksByCategory.pages}
-      />
+      <div className={s.container}>
+        <h2 className={s["title-category"]}>Tasks in Category</h2>
+        <div className={s.wrapper}>{renderItems}</div>
+        <Pagination
+          currentPage={page}
+          onChangePage={handlePageChange}
+          pageCount={tasksByCategory.pages}
+        />
+      </div>
     </>
   );
 };

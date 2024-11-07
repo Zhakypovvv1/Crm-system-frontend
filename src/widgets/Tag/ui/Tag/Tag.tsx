@@ -11,6 +11,9 @@ import ShareForm from "../../../../shared/ui/shareForm/shareForm";
 import { formConfig } from "../../../../shared/config/formConfig";
 import s from "./Tag.module.scss";
 import { NavLink } from "react-router-dom";
+import useModal from "../../../../shared/hooks/useModal";
+import AppButton from "../../../../shared/ui/Button/Button";
+import Modal from "../../../../shared/ui/Modal/Modal";
 
 const { Title } = Typography;
 
@@ -19,7 +22,7 @@ const Tag = () => {
   const tags = useAppSelector((state) => state.tags);
   const { status, error } = tags;
 
-  console.log(tags.items);
+  const { openModal, isModalOpen, closeModal } = useModal();
 
   useEffect(() => {
     dispatch(getTagsThunk());
@@ -31,30 +34,41 @@ const Tag = () => {
       message.success("Tag created successfully!");
     });
   };
+
   return (
-    <div>
+    <>
       {status === "failed" && (
         <Alert message="Error" description={error} type="error" showIcon />
       )}
       {status === "loading" && <Spinner />}
-
-      <Space direction="vertical" size="middle" className={s.tagContent}>
-        <Title level={4}>Create New Tag</Title>
-        <ShareForm
-          handleSubmit={handleAddTag}
-          config={formConfig}
-          type="tags"
-        />
-        <Title level={5}>Existing Tags</Title>
-        <div className={s.tagList}>
-          {tags.items.map((el) => (
-            <AntTag key={el._id} className={s.tagItem}>
-              <NavLink to={`/tags/${el._id}`}>{el.name}</NavLink>
-            </AntTag>
-          ))}
-        </div>
-      </Space>
-    </div>
+      <div className={s.container}>
+        <Space className={s.tagList}>
+          <Title>Tag Managment</Title>
+          <AppButton variant="tertiary" size="small" onClick={openModal}>
+            Create Tag
+          </AppButton>
+          <Modal isOpen={isModalOpen} onClose={closeModal} size="large">
+            <ShareForm
+              handleSubmit={handleAddTag}
+              config={formConfig}
+              type="tags"
+            />
+          </Modal>
+          <div className={s.tagWrapper}>
+            {tags.items.map((el) => (
+              <AntTag key={el._id} className={s.tagItems} color="blue">
+                <NavLink
+                  style={{ textDecoration: "none" }}
+                  to={`/tags/${el._id}`}
+                >
+                  {el.name}
+                </NavLink>
+              </AntTag>
+            ))}
+          </div>
+        </Space>
+      </div>
+    </>
   );
 };
 

@@ -45,9 +45,7 @@ const UploadAvatar: React.FC<UploadAvatarProps> = ({ user, fetchUserUI }) => {
         fetchUserUI();
       })
       .catch((err) => {
-        if (err) {
-          return message.error("Ошибка обновления аватара");
-        }
+        message.error("Ошибка обновления аватара");
       });
   };
   return (

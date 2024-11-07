@@ -13,6 +13,7 @@ import { Alert, message } from "antd";
 import Item from "../../../../shared/ui/Item/TaskItem/Item";
 import Spinner from "../../../../shared/ui/Spinner/Spinner";
 import Pagination from "../../../../shared/ui/Pagination/Pagination";
+import s from "./TasksByTag.module.scss";
 
 const TasksByTag = () => {
   const { tagId } = useParams<string>();
@@ -21,7 +22,6 @@ const TasksByTag = () => {
   const { status, error } = tasksByTag;
   const { page, updateSearchParams } = useFilterSearchParams();
   console.log(tasksByTag);
-  
 
   useEffect(() => {
     dispatch(getTasksByTagThunk({ tagId, page, pageSize: 6 }));
@@ -71,13 +71,15 @@ const TasksByTag = () => {
         <Alert message="Error" description={error} type="error" showIcon />
       )}
       {status === "loading" && <Spinner />}
-      <h2>Tasks in Tag</h2>
-      {renderItems}
-      <Pagination
-        currentPage={page}
-        onChangePage={handlePageChange}
-        pageCount={tasksByTag.pages}
-      />
+      <div className={s.container}>
+        <h2>Tasks in Tag</h2>
+        <div className={s.wrapper}>{renderItems}</div>
+        <Pagination
+          currentPage={page}
+          onChangePage={handlePageChange}
+          pageCount={tasksByTag.pages}
+        />
+      </div>
     </>
   );
 };

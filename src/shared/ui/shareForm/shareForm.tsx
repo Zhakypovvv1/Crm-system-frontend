@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import s from "./shareForm.module.scss";
-import AppButton from "../Button/Button";
-import { Input, Select } from "antd";
+import { Button, Form, Input, Select } from "antd";
 
 interface FormField {
   name: string;
@@ -57,16 +56,18 @@ const ShareForm: React.FC<MyFormComponent> = ({
     }));
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    console.log(e);
-    e.preventDefault();
+  const onFinish = () => {
     handleSubmit(formData);
     console.log("Form submitted:", formData);
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
   };
   return (
     <div className={s.registerContainer}>
       <div className={s.formWrapper}>
-        <form onSubmit={onSubmit}>
+        <Form onFinish={onFinish} onFinishFailed={onFinishFailed}>
           {formDetails.fields?.map((el, index: number) => (
             <div key={index}>
               {el.type === "select" ? (
@@ -83,19 +84,28 @@ const ShareForm: React.FC<MyFormComponent> = ({
                   ))}
                 </Select>
               ) : (
-                <Input
+                <Form.Item
                   name={el.name}
-                  type={el.type}
-                  placeholder={el.placeholder}
-                  value={formData[el.name] || ""}
-                  onChange={handleChange}
-                  disabled={disabled}
-                />
+                  rules={[
+                    { required: true, message: `Please input your ${el.name}` },
+                  ]}
+                >
+                  <Input
+                    name={el.name}
+                    type={el.type}
+                    placeholder={el.placeholder}
+                    value={formData[el.name] || ""}
+                    onChange={handleChange}
+                    disabled={disabled}
+                  />
+                </Form.Item>
               )}
             </div>
           ))}
-          <AppButton type="submit">{config[type].buttonText}</AppButton>
-        </form>
+          <Button htmlType="submit" style={{ marginTop: "10px" }}>
+            {config[type].buttonText}
+          </Button>
+        </Form>
       </div>
     </div>
   );

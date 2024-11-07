@@ -8,7 +8,6 @@ import useModal from "../../../../shared/hooks/useModal";
 import { fetchTasksThunk } from "../../../../shared/slicer/tasks/getTasksSlice";
 import { addTaskThunk } from "../../../../shared/slicer/tasks/addTaskSlice";
 import Spinner from "../../../../shared/ui/Spinner/Spinner";
-import Pagination from "../../../../shared/ui/Pagination/Pagination";
 import s from "./Home.module.scss";
 import { RootState } from "../../../../app/Provider/store/store";
 import AddTask from "../../../../features/AddTask/ui/AddTask/AddTask";
